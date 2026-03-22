@@ -49,3 +49,16 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/weather-app:${{ env.VERSION }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/weather-app:${{ env.VERSION }}
+
+      # Update the K8s Manifest Files
+      - name: Update K8s Manifest Files
+        run: |
+          sed -i 's|image: <Image>|image: ${{ secrets.DOCKER_USERNAME }}/weather-app:${{ env.VERSION }}|g' k8s/deploy.yml
+
+      - name: Commit the changes
+        run: |
+          git config --global user.name "Github Action"
+          git config --global user.email "<>"
+          git add k8s/deploy.yml
+          git commit -m "Update image version to ${{ env.VERSION }}"
+          git push -u origin master
