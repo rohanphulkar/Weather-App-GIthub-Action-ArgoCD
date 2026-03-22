@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: weatherapp
-          image: <Image>
+          image: rohanphulkar/weather-app:v20260322143845
           ports:
             - containerPort: 5000
           resources:
